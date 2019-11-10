@@ -1,32 +1,76 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <v-app>
+    <v-app-bar
+      app
+      dark
+      height="100px"
+    >
+      <div class="d-flex align-center">
+        <router-link
+        :to = "'/'"
+        >
+          MAXIMUM
+      </router-link>
+      </div>
+
+      <v-spacer></v-spacer>
+        <v-select
+          :items = "items"
+          label = "Выберите курс"
+          hide-details
+          v-model = currentCourse
+        ></v-select>
+    </v-app-bar>
+
+  <v-content>
+    <v-container fluid >
+      <router-view></router-view>
+    </v-container>
+  </v-content>
+  </v-app>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+<script>
+// import HelloWorld from './components/HelloWorld'
+import { mapGetters, mapActions } from 'vuex'
+export default {
+  name: 'App',
+  data: () => ({
+    currentCourse: ''
+  }),
+  computed: {
+    ...mapGetters(['getCourses', 'getCurrentCourse']),
+    items () {
+      let array = []
+      this.getCourses.forEach(course => {
+        array.push({
+          text: course.name,
+          value: course.id
+        })
+      })
+      return array
     }
+  },
+  methods: {
+    ...mapActions(['fetchData', 'changeCurrentCourse'])
+  },
+  watch: {
+    currentCourse () {
+      this.changeCurrentCourse(this.currentCourse)
+      if (this.$router.currentRoute.name !== 'lessons') {
+        this.$router.push('/lessons')
+      }
+    }
+  },
+  async mounted () {
+    this.fetchData('courses')
+    this.fetchData('lessons')
   }
 }
+</script>
+
+<style lang="scss" >
+  .centered {
+    text-align: center;
+  }
 </style>

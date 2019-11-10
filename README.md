@@ -1,5 +1,7 @@
 # maximumcourses
 
+Тестовое задание
+
 ## Project setup
 ```
 npm install
