@@ -2,6 +2,8 @@
 
 Тестовое задание
 
+https://radaana.github.io/maximum/dist/index.html
+
 ## Project setup
 ```
 npm install

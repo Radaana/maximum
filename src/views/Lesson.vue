@@ -5,14 +5,15 @@
     <v-flex>
 
       <router-link
-      :to = "{ path: routes.statistics}"
+      color="deep-purple accent-4"
+      :to = routes.statistics
       exact
       >
           Статистика
       </router-link>
-
       <router-link
-      :to = "{ path: routes.tests}"
+      color="deep-purple accent-4"
+      :to = routes.tests
       exact
       >
           Тесты
@@ -29,6 +30,9 @@
 import { mapGetters } from 'vuex'
 export default {
   name: 'lesson',
+  data: () => ({
+    lessonPath: ''
+  }),
   computed: {
     ...mapGetters(['getLessonById']),
     pageName () {
@@ -36,10 +40,13 @@ export default {
     },
     routes () {
       return {
-        tests: this.$route.path + '/tests',
-        statistics: this.$route.path + '/statistics'
+        tests: this.lessonPath + '/tests',
+        statistics: this.lessonPath + '/statistics'
       }
     }
+  },
+  mounted () {
+    this.lessonPath = this.$route.path
   }
 }
 </script>
